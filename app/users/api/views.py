@@ -17,8 +17,6 @@ class UserView(ListCreateAPIView):
     permission_classes = [AllowAny]
 
     def get_queryset(self):
-        print("aaa")
-        get_users_count.delay()
         return User.objects.all().order_by("-id")
 
     def create(self, request, *args, **kwargs):

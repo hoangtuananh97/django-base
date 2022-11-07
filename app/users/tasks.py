@@ -11,6 +11,4 @@ task_logger = get_task_logger(__name__)
 @app.task
 def get_users_count():
     """A pointless Celery task to demonstrate usage."""
-    task_logger.info("Count user")
-    User.objects.filter(id=1).update(first_name="aaaaa")
     return User.objects.count()
