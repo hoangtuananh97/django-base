@@ -60,6 +60,12 @@ jobs:
       - name: Test with pytest
         run: coverage run -m pytest && coverage report -m
 
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF##*/})"
+        id: extract_branch
+
       - name: Run Linters and Checks
         run: |
           pre-commit run --all
+        if: steps.extract_branch.outputs.branch != 'master' || steps.extract_branch.outputs.branch != 'main' || steps.extract_branch.outputs.branch == 'develop'
