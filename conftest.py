@@ -17,7 +17,7 @@ def run_sql(sql):
 def django_db_setup(django_db_blocker, django_db_keepdb=True) -> None:
     from django.conf import settings
 
-    database_name = "jpox_test_db"
+    database_name = "postgres"
     user_name = "jpox_test_user"
     password = "jpox_test_pw"
     settings.DATABASES["default"]["NAME"] = database_name
@@ -26,23 +26,23 @@ def django_db_setup(django_db_blocker, django_db_keepdb=True) -> None:
 
     # run_sql(f"DROP DATABASE IF EXISTS {database_name}")
     # run_sql(f"-- CREATE DATABASE {database_name} IF NOT EXISTS {database_name}")
-    run_sql("DROP extension IF EXISTS dblink")
-    run_sql(
-        f"""
-    DO
-    $do$
-    BEGIN
-       IF EXISTS (SELECT FROM pg_database WHERE datname = '{database_name}') THEN
-          RAISE NOTICE 'Database already exists';  -- optional
-       ELSE
-          CREATE extension dblink;
-          PERFORM dblink_exec('dbname=' || current_database()  -- current db
-                            , 'CREATE DATABASE {database_name}');
-       END IF;
-    END
-    $do$;
-    """
-    )
+    # run_sql("DROP extension IF EXISTS dblink")
+    # run_sql(
+    #     f"""
+    # DO
+    # $do$
+    # BEGIN
+    #    IF EXISTS (SELECT FROM pg_database WHERE datname = '{database_name}') THEN
+    #       RAISE NOTICE 'Database already exists';  -- optional
+    #    ELSE
+    #       CREATE extension dblink;
+    #       PERFORM dblink_exec('dbname=' || current_database()  -- current db
+    #                         , 'CREATE DATABASE {database_name}');
+    #    END IF;
+    # END
+    # $do$;
+    # """
+    # )
     run_sql(
         f"""
     DO
@@ -51,7 +51,6 @@ def django_db_setup(django_db_blocker, django_db_keepdb=True) -> None:
            IF EXISTS (
               SELECT FROM pg_catalog.pg_roles
               WHERE  rolname = '{user_name}') THEN
-
               RAISE NOTICE 'Role "{user_name}" already exists. Skipping.';
            ELSE
               CREATE ROLE {user_name} LOGIN PASSWORD '{password}';
@@ -69,7 +68,7 @@ def django_db_setup(django_db_blocker, django_db_keepdb=True) -> None:
     for connection in connections.all():
         connection.close()
 
-    run_sql(f"DROP DATABASE {database_name}")
+    # run_sql(f"DROP DATABASE {database_name}")
 
 
 pytest_plugins = [
