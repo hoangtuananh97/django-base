@@ -26,25 +26,29 @@ jobs:
     services:
       postgres:
         image: postgres:14
+        port:
+          - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
         env:
-          POSTGRES_PASSWORD: jpox_test_pw
+          POSTGRES_PASSWORD: postgres
           POSTGRES_ENGINE: django.db.backends.postgresql
           POSTGRES_DB: postgres
-          POSTGRES_USER: jpox_test_user
+          POSTGRES_USER: postgres
           POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
     env:
       # postgres://user:password@host:port/database
-      DATABASE_URL: "postgres://jpox_test_user:jpox_test_pw@localhost:5432/jpox_test_db"
-      POSTGRES_PASSWORD: jpox_test_pw
+      DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres"
+      POSTGRES_PASSWORD: postgres
       POSTGRES_ENGINE: django.db.backends.postgresql
       POSTGRES_DB: postgres
-      POSTGRES_USER: jpox_test_user
+      POSTGRES_USER: postgres
       POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
 
     steps:
       - name: Checkout Code Repository
@@ -68,9 +72,9 @@ jobs:
           python -m pip install wheel
           pip install -r requirements/local.txt
 
+      - name: Test with pytest
+        run: pytest
+
       - name: Run Linters and Checks
         run: |
           pre-commit run --all
-
-      - name: Test with pytest
-        run: pytest --ds=config.settings.test --reuse-db
