@@ -24,8 +24,25 @@ def django_db_setup(django_db_blocker, django_db_keepdb=True) -> None:
     settings.DATABASES["default"]["USER"] = user_name
     settings.DATABASES["default"]["PASSWORD"] = password
 
-    run_sql(f"DROP DATABASE IF EXISTS {database_name}")
-    run_sql(f"CREATE DATABASE {database_name}")
+    # run_sql(f"DROP DATABASE IF EXISTS {database_name}")
+    # run_sql(f"-- CREATE DATABASE {database_name} IF NOT EXISTS {database_name}")
+    run_sql("DROP extension IF EXISTS dblink")
+    run_sql(
+        f"""
+    DO
+    $do$
+    BEGIN
+       IF EXISTS (SELECT FROM pg_database WHERE datname = '{database_name}') THEN
+          RAISE NOTICE 'Database already exists';  -- optional
+       ELSE
+          CREATE extension dblink;
+          PERFORM dblink_exec('dbname=' || current_database()  -- current db
+                            , 'CREATE DATABASE {database_name}');
+       END IF;
+    END
+    $do$;
+    """
+    )
     run_sql(
         f"""
     DO
