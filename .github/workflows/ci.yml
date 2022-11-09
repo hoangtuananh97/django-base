@@ -38,7 +38,7 @@ jobs:
           POSTGRES_ENGINE: django.db.backends.postgresql
           POSTGRES_DB: postgres
           POSTGRES_USER: postgres
-          POSTGRES_HOST: localhost
+          POSTGRES_HOST: host.docker.internal
           POSTGRES_PORT: 5432
     env:
       # postgres://user:password@host:port/database
@@ -47,7 +47,7 @@ jobs:
       POSTGRES_ENGINE: django.db.backends.postgresql
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
-      POSTGRES_HOST: localhost
+      POSTGRES_HOST: host.docker.internal
       POSTGRES_PORT: 5432
 
     steps:
