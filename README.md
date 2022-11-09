@@ -53,6 +53,11 @@ Please note: For Celery's import magic to work, it is important _where_ the cele
     $ ./manage.py spectacular --file schema.yml
     $ docker run -p 80:8080 -e SWAGGER_JSON=/schema.yml -v ${PWD}/schema.yml:/schema.yml swaggerapi/swagger-ui
 
+### Remove expired token jwt
+    $ python manage.py flushexpiredtokens
+### Run pre-commit before commit (Can setup pre-commit of git)
+    $ pre-commit run --all-files
+    $ pre-commit run --files <dir of file>
 ## Deployment
 
 The following details how to deploy this application.

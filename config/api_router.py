@@ -1,7 +1,5 @@
-from django.urls import path, include
-
+from django.urls import include, path
 
 urlpatterns = [
     path("", include("app.users.api.urls")),
 ]
-

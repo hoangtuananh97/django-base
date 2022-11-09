@@ -1,6 +1,7 @@
 from django.core.paginator import InvalidPage
 from rest_framework import pagination
 from rest_framework.response import Response
+
 from app.core.error_json_render import PageNotFound
 
 
@@ -8,15 +9,17 @@ class Pagination(pagination.PageNumberPagination):
     page_size = 20
 
     def get_paginated_response(self, data):
-        return Response({
-            'links': {
-                'prev': self.get_previous_link(),
-                'next': self.get_next_link(),
-                'count': self.page.paginator.per_page,
-                'total_record': self.page.paginator.count,
-            },
-            'data': data
-        })
+        return Response(
+            {
+                "links": {
+                    "prev": self.get_previous_link(),
+                    "next": self.get_next_link(),
+                    "count": self.page.paginator.per_page,
+                    "total_record": self.page.paginator.count,
+                },
+                "data": data,
+            }
+        )
 
     def paginate_queryset(self, queryset, request, view=None):
         page_size = self.get_page_size(request)

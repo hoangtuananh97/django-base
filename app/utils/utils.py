@@ -10,7 +10,7 @@ def get_random_secret_key(length=20):
     """
     Return a 50 character random string usable as a SECRET_KEY setting value.
     """
-    chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIKMNOPQRSTUVWXYZ0123456789!@#$%^&*(-_=+)'
+    chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIKMNOPQRSTUVWXYZ0123456789!@#$%^&*(-_=+)"
     return get_random_string(length, chars)
 
 

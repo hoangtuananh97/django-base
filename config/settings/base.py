@@ -1,6 +1,7 @@
 """
 Base settings to build other settings files upon.
 """
+from datetime import timedelta
 from pathlib import Path
 
 import environ
@@ -17,6 +18,10 @@ if READ_DOT_ENV_FILE:
     # OS environment variables take precedence over variables from .env
     env.read_env(str(ROOT_DIR / ".env"))
 
+SECRET_KEY = env(
+    "DJANGO_SECRET_KEY",
+    default="VD3UVDxmlMb9JAGsKyYSwoX0ZRoyTFv3PlHKQxRorxWIcz2HThbGIwI9PiqyarfD",
+)
 # GENERAL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#debug
@@ -27,7 +32,7 @@ DEBUG = env.bool("DJANGO_DEBUG", False)
 # In Windows, this must be set to your system time zone.
 TIME_ZONE = "UTC"
 # https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-LANGUAGE_CODE = 'ja'
+LANGUAGE_CODE = "ja"
 LANGUAGES = [
     ("en", "English"),
     ("ja", "Japanese"),
@@ -54,9 +59,12 @@ DATABASES = {
         "PASSWORD": env("POSTGRES_PASSWORD"),
         "HOST": env("POSTGRES_HOST"),
         "PORT": env("POSTGRES_PORT"),
-        "CONN_MAX_AGE": env.int("CONN_MAX_AGE", default=60),
-    }
+        "CONN_MAX_AGE": env.int("CONN_MAX_AGE", default=500),
+    },
 }
+
+TEST_RUNNER = "app.tests.runner.PytestTestRunner"
+
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -89,6 +97,7 @@ THIRD_PARTY_APPS = [
     "drf_spectacular",
     "rosetta",
     "django_celery_results",
+    "rest_framework_simplejwt.token_blacklist",
 ]
 
 LOCAL_APPS = [
@@ -133,8 +142,12 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
     },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"
+    },
 ]
 
 # MIDDLEWARE
@@ -316,7 +329,7 @@ LOGGING = {
             "level": "DEBUG",
             "class": "logging.StreamHandler",
             "formatter": "verbose",
-        }
+        },
     },
     "loggers": {
         "django": {"level": "INFO", "propagate": True},
@@ -372,21 +385,45 @@ STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.TokenAuthentication",
     ),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAdminUser",
+        "rest_framework.permissions.IsAuthenticated",
+    ),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "TIME_FORMAT": EnumConst.TIME_FORMAT,
     "DATETIME_FORMAT": EnumConst.DATETIME_FORMAT,
     "DATE_FORMAT": EnumConst.DATE_FORMAT,
-    "DEFAULT_RENDERER_CLASSES": (
-        'app.core.json_render.JsonRenderResponse',
-    ),
-    "EXCEPTION_HANDLER": 'app.core.error_json_render.exception_handler_response',
-    "DEFAULT_PAGINATION_CLASS": 'app.core.pagination.Pagination',
+    "DEFAULT_RENDERER_CLASSES": ("app.core.json_render.JsonRenderResponse",),
+    "EXCEPTION_HANDLER": "app.core.error_json_render.exception_handler_response",
+    "DEFAULT_PAGINATION_CLASS": "app.core.pagination.Pagination",
 }
 
+# SIMPLE JWT
+# ------------------------------------------------------------------------------
+# https://github.com/SimpleJWT/django-rest-framework-simplejwt
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=14),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "VERIFYING_KEY": None,
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "id",
+    "AUTH_TOKEN_CLASSES": (
+        "rest_framework_simplejwt.tokens.AccessToken",
+        "rest_framework_simplejwt.tokens.RefreshToken",
+    ),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "JTI_CLAIM": "jti",
+}
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
 CORS_URLS_REGEX = r"^/api/.*$"
 
@@ -398,7 +435,10 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
     "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAdminUser"],
     "SERVERS": [
-        {"url": "http://127.0.0.1:8000", "description": "Local Development server"},
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "Local Development server",
+        },
         {"url": "https://example.com", "description": "Production server"},
     ],
 }

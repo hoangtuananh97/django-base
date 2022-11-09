@@ -1,29 +1,8 @@
-from django.test import RequestFactory
+def test_superuser(superuser):
+    is_superuser = superuser.is_superuser
+    assert is_superuser == 1
 
-from app.users.models import User
 
-
-class TestUserViewSet:
-    def test_get_queryset(self, user: User, rf: RequestFactory):
-        view = UserViewSet()
-        request = rf.get("/fake-url/")
-        request.user = user
-
-        view.request = request
-
-        assert user in view.get_queryset()
-
-    def test_me(self, user: User, rf: RequestFactory):
-        view = UserViewSet()
-        request = rf.get("/fake-url/")
-        request.user = user
-
-        view.request = request
-
-        response = view.me(request)
-
-        assert response.data == {
-            "username": user.username,
-            "name": user.name,
-            "url": f"http://testserver/api/users/{user.username}/",
-        }
+def test_staff_user(staff_user):
+    is_staff = staff_user.is_staff
+    assert is_staff == 1

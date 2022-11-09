@@ -1,4 +1,5 @@
 from app.utils.utils import get_random_secret_key
+
 from .base import *  # noqa
 from .base import env
 
@@ -11,28 +12,30 @@ ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["example.com"])
 
 # DATABASES
 # ------------------------------------------------------------------------------
-DATABASES["default"]["POSTGRES_ENGINE"] = env("POSTGRES_ENGINE")  # noqa F405
-DATABASES["default"]["POSTGRES_DB"] = env("POSTGRES_DB")  # noqa F405
-DATABASES["default"]["POSTGRES_USER"] = env("POSTGRES_USER")  # noqa F405
-DATABASES["default"]["POSTGRES_PASSWORD"] = env("POSTGRES_PASSWORD")  # noqa F405
-DATABASES["default"]["POSTGRES_HOST"] = env("POSTGRES_HOST")  # noqa F405
-DATABASES["default"]["POSTGRES_PORT"] = env("POSTGRES_PORT")  # noqa F405
-DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
+DATABASES["default"]["POSTGRES_ENGINE"] = env("POSTGRES_ENGINE")  # noqa
+DATABASES["default"]["POSTGRES_DB"] = env("POSTGRES_DB")  # noqa
+DATABASES["default"]["POSTGRES_USER"] = env("POSTGRES_USER")  # noqa
+DATABASES["default"]["POSTGRES_PASSWORD"] = env("POSTGRES_PASSWORD")  # noqa
+DATABASES["default"]["POSTGRES_HOST"] = env("POSTGRES_HOST")  # noqa
+DATABASES["default"]["POSTGRES_PORT"] = env("POSTGRES_PORT")  # noqa
+DATABASES["default"]["CONN_MAX_AGE"] = env.int(  # noqa F405
+    "CONN_MAX_AGE", default=600
+)  # noqa F405
 
 # CACHES
 # ------------------------------------------------------------------------------
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": env("REDIS_URL"),
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            # Mimicing memcache behavior.
-            # https://github.com/jazzband/django-redis#memcached-exceptions-behavior
-            "IGNORE_EXCEPTIONS": True,
-        },
-    }
-}
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": env("REDIS_URL"),
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#             # Mimicing memcache behavior.
+#             # https://github.com/jazzband/django-redis#memcached-exceptions-behavior
+#             "IGNORE_EXCEPTIONS": True,
+#         },
+#     }
+# }
 
 # SECURITY
 # ------------------------------------------------------------------------------
@@ -86,7 +89,9 @@ AWS_S3_MAX_MEMORY_SIZE = env.int(
 AWS_S3_REGION_NAME = env("DJANGO_AWS_S3_REGION_NAME", default=None)
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#cloudfront
 AWS_S3_CUSTOM_DOMAIN = env("DJANGO_AWS_S3_CUSTOM_DOMAIN", default=None)
-aws_s3_domain = AWS_S3_CUSTOM_DOMAIN or f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+aws_s3_domain = (
+    AWS_S3_CUSTOM_DOMAIN or f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+)
 # STATIC
 # ------------------------
 STATICFILES_STORAGE = "app.utils.storages.StaticRootS3Boto3Storage"
@@ -156,18 +161,20 @@ INSTALLED_APPS = ["collectfast"] + INSTALLED_APPS  # noqa F405
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
-LOGGING["filters"] = {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}}
-LOGGING["handlers"]["mail_admins"] = {
+LOGGING["filters"] = {  # noqa F405
+    "require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}
+}
+LOGGING["handlers"]["mail_admins"] = {  # noqa F405
     "level": "ERROR",
     "filters": ["require_debug_false"],
     "class": "django.utils.log.AdminEmailHandler",
 }
-LOGGING["loggers"]["django.request"] = {
+LOGGING["loggers"]["django.request"] = {  # noqa F405
     "handlers": ["mail_admins"],
     "level": "ERROR",
     "propagate": True,
 }
-LOGGING["loggers"]["django.security.DisallowedHost"] = {
+LOGGING["loggers"]["django.security.DisallowedHost"] = {  # noqa F405
     "level": "ERROR",
     "handlers": ["console", "mail_admins"],
     "propagate": True,

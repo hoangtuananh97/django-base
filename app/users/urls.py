@@ -4,5 +4,5 @@ from app.users import views
 
 app_name = "users"
 urlpatterns = [
-    path('', view=views.home, name="index"),
+    path("", view=views.home, name="index"),
 ]

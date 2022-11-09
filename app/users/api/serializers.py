@@ -7,31 +7,22 @@ User = get_user_model()
 class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = [
-            "id",
-            "email",
-            "phone",
-            "avatar",
-            "fullname"
-        ]
+        fields = ["id", "email", "phone", "avatar", "fullname"]
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True, max_length=255)
     phone = serializers.CharField(required=True, max_length=15)
-    first_name = serializers.CharField(required=False, allow_null=True, allow_blank=True, max_length=150)
-    last_name = serializers.CharField(required=False, allow_null=True, allow_blank=True, max_length=150)
+    first_name = serializers.CharField(
+        required=False, allow_null=True, allow_blank=True, max_length=150
+    )
+    last_name = serializers.CharField(
+        required=False, allow_null=True, allow_blank=True, max_length=150
+    )
 
     class Meta:
         model = User
-        fields = [
-            "id",
-            "email",
-            "phone",
-            "avatar",
-            "first_name",
-            "last_name"
-        ]
+        fields = ["id", "email", "phone", "avatar", "first_name", "last_name"]
 
     def validate(self, attrs):
         return attrs
@@ -43,20 +34,22 @@ class UserCreateSerializer(serializers.ModelSerializer):
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = [
-            "id",
-            "email",
-            "phone",
-            "avatar",
-            "fullname"
-        ]
+        fields = ["id", "email", "phone", "avatar", "fullname"]
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(required=False, allow_null=True, allow_blank=True, max_length=255)
-    phone = serializers.CharField(required=False, allow_null=True, allow_blank=True, max_length=15)
-    first_name = serializers.CharField(required=False, allow_null=True, allow_blank=True, max_length=150)
-    last_name = serializers.CharField(required=False, allow_null=True, allow_blank=True, max_length=150)
+    email = serializers.EmailField(
+        required=False, allow_null=True, allow_blank=True, max_length=255
+    )
+    phone = serializers.CharField(
+        required=False, allow_null=True, allow_blank=True, max_length=15
+    )
+    first_name = serializers.CharField(
+        required=False, allow_null=True, allow_blank=True, max_length=150
+    )
+    last_name = serializers.CharField(
+        required=False, allow_null=True, allow_blank=True, max_length=150
+    )
 
     class Meta:
         model = User

@@ -1,7 +1,6 @@
 from celery.utils.log import get_task_logger
 from django.contrib.auth import get_user_model
 
-from config import celery_app
 from config.celery_app import app
 
 User = get_user_model()
