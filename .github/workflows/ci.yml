@@ -44,7 +44,7 @@ jobs:
       POSTGRES_ENGINE: django.db.backends.postgresql
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
-      POSTGRES_HOST: localhost
+      POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
 
     steps:
