@@ -58,7 +58,7 @@ jobs:
           python manage.py migrate --noinput
 
       - name: Test with pytest
-        run: pytest
+        run: coverage run -m pytest && coverage report -m
 
       - name: Run Linters and Checks
         run: |

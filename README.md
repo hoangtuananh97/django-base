@@ -29,6 +29,7 @@ To run the tests, check your test coverage, and generate an HTML coverage report
 #### Running tests with pytest
 
     $ pytest
+    $ coverage run -m pytest && coverage report -m
 
 ### Live reloading and Sass CSS compilation
 
