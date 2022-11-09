@@ -35,11 +35,8 @@ jobs:
           --health-retries 5
         env:
           POSTGRES_PASSWORD: postgres
-          POSTGRES_ENGINE: django.db.backends.postgresql
           POSTGRES_DB: postgres
           POSTGRES_USER: postgres
-          POSTGRES_HOST: host.docker.internal
-          POSTGRES_PORT: 5432
     env:
       # postgres://user:password@host:port/database
       DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres"
@@ -47,7 +44,7 @@ jobs:
       POSTGRES_ENGINE: django.db.backends.postgresql
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
-      POSTGRES_HOST: host.docker.internal
+      POSTGRES_HOST: localhost
       POSTGRES_PORT: 5432
 
     steps:
