@@ -19,7 +19,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-
   pytest:
     runs-on: ubuntu-latest
     container: python:3.10
@@ -29,13 +28,13 @@ jobs:
         image: postgres:14
         ports:
           - 5432:5432
-            env:
-              POSTGRES_PASSWORD: jpox_test_pw
-              POSTGRES_ENGINE: django.db.backends.postgresql
-              POSTGRES_DB: jpox_test_db
-              POSTGRES_USER: jpox_test_user
-              POSTGRES_HOST: localhost
-              POSTGRES_PORT: 5432
+        env:
+          POSTGRES_PASSWORD: jpox_test_pw
+          POSTGRES_ENGINE: django.db.backends.postgresql
+          POSTGRES_DB: jpox_test_db
+          POSTGRES_USER: jpox_test_user
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
     env:
       # postgres://user:password@host:port/database
       DATABASE_URL: "postgres://jpox_test_user:jpox_test_pw@localhost:5432/jpox_test_db"
