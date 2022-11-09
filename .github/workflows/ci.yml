@@ -46,6 +46,7 @@ jobs:
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
 
+    if: github.ref != 'refs/heads/develop' || github.ref != 'refs/heads/main' || github.ref == 'refs/heads/master'
     steps:
       - name: Checkout Code Repository
         uses: actions/checkout@v3
@@ -68,4 +69,3 @@ jobs:
       - name: Run Linters and Checks
         run: |
           pre-commit run --all
-        if: steps.extract_branch.outputs.branch != 'master' || steps.extract_branch.outputs.branch != 'main' || steps.extract_branch.outputs.branch == 'develop'
