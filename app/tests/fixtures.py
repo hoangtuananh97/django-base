@@ -1,5 +1,3 @@
-from typing import List
-
 import pytest
 
 from app.users.models import User
@@ -33,7 +31,7 @@ def customer_user(db) -> User:
 
 
 @pytest.fixture(autouse=True)
-def user_list(db, django_db_setup) -> List[User]:
+def user_list(db, django_db_setup) -> list[User]:
     users = User.objects.bulk_create(
         [
             User(email="user-2@example.com"),

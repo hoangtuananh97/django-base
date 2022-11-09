@@ -1,5 +1,5 @@
+from collections.abc import Iterable
 from enum import Enum
-from typing import Iterable, List
 
 from django.contrib.auth.models import Permission
 
@@ -80,7 +80,9 @@ class ProductPermissions(BasePermissionEnum):
 
 
 class ProductTypePermissions(BasePermissionEnum):
-    MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES = "product.manage_product_types_and_attributes"
+    MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES = (
+        "product.manage_product_types_and_attributes"
+    )
 
 
 class ShippingPermissions(BasePermissionEnum):
@@ -109,7 +111,9 @@ class CategoryForecastPermission(BasePermissionEnum):
     EDIT_SUBMITTED_TARGET_ADJUSTMENT = (
         "saleor_category_forecast.edit_submitted_target_adjustment"
     )
-    APPROVE_TARGET_ADJUSTMENT = "saleor_category_forecast.approve_target_adjustment"
+    APPROVE_TARGET_ADJUSTMENT = (
+        "saleor_category_forecast.approve_target_adjustment"
+    )
     FINAL_APPROVE_TARGET_ADJUSTMENT = (
         "saleor_category_forecast.final_approve_target_adjustment"
     )
@@ -119,7 +123,9 @@ class CategoryTargetPermission(BasePermissionEnum):
     VIEW_DISPLAY_TARGET = "saleor_category_target.view_display_target"
     VIEW_TARGET_SET = "saleor_category_target.view_target_set"
     EDIT_DRAFT_TARGET_SET = "saleor_category_target.edit_draft_target_set"
-    EDIT_SUBMITTED_TARGET_SET = "saleor_category_target.edit_submitted_target_set"
+    EDIT_SUBMITTED_TARGET_SET = (
+        "saleor_category_target.edit_submitted_target_set"
+    )
     APPROVE_TARGET_SET = "saleor_category_target.approve_target_set"
 
 
@@ -144,9 +150,15 @@ class ProductOrderHistoryPermission(BasePermissionEnum):
 
 
 class ProductReplacementPermissions(BasePermissionEnum):
-    VIEW_PRODUCT_REPLACEMENT = "saleor_product_replacement.view_product_replacement"
-    CHANGE_PRODUCT_REPLACEMENT = "saleor_product_replacement.change_product_replacement"
-    DELETE_PRODUCT_REPLACEMENT = "saleor_product_replacement.delete_product_replacement"
+    VIEW_PRODUCT_REPLACEMENT = (
+        "saleor_product_replacement.view_product_replacement"
+    )
+    CHANGE_PRODUCT_REPLACEMENT = (
+        "saleor_product_replacement.change_product_replacement"
+    )
+    DELETE_PRODUCT_REPLACEMENT = (
+        "saleor_product_replacement.delete_product_replacement"
+    )
 
 
 class SupplierPermission(BasePermissionEnum):
@@ -158,7 +170,9 @@ class PurchaseOrderPermission(BasePermissionEnum):
 
 
 class StockReplenishmentPermissions(BasePermissionEnum):
-    MANAGE_STOCK_REPLENISHMENT = "saleor_stock_replenishment.manage_stock_replenishment"
+    MANAGE_STOCK_REPLENISHMENT = (
+        "saleor_stock_replenishment.manage_stock_replenishment"
+    )
 
 
 class StockTransferPermissions(BasePermissionEnum):
@@ -222,7 +236,7 @@ def get_permissions_enum_dict():
     }
 
 
-def get_permissions_from_names(names: List[str]):
+def get_permissions_from_names(names: list[str]):
     """Convert list of permission names - ['MANAGE_ORDERS'] to Permission db objects."""
     permissions = get_permissions_enum_dict()
     return get_permissions([permissions[name].value for name in names])
@@ -256,7 +270,7 @@ def get_permissions(permissions=None):
     return get_permissions_from_codenames(codenames)
 
 
-def get_permissions_from_codenames(permission_codenames: List[str]):
+def get_permissions_from_codenames(permission_codenames: list[str]):
     return (
         Permission.objects.filter(codename__in=permission_codenames)
         .prefetch_related("content_type")

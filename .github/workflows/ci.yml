@@ -48,6 +48,12 @@ jobs:
           - 5432:5432
         env:
           POSTGRES_PASSWORD: postgres
+          POSTGRES_ENGINE: django.db.backends.postgresql
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+
 
     env:
       # postgres://user:password@host:port/database

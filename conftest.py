@@ -16,6 +16,7 @@ def run_sql(sql):
 @pytest.fixture(scope="session")
 def django_db_setup(django_db_blocker, django_db_keepdb=True) -> None:
     from django.conf import settings
+
     database_name = "jpox_test_db"
     user_name = "jpox_test_user"
     password = "jpox_test_pw"
@@ -25,7 +26,8 @@ def django_db_setup(django_db_blocker, django_db_keepdb=True) -> None:
 
     run_sql(f"DROP DATABASE IF EXISTS {database_name}")
     run_sql(f"CREATE DATABASE {database_name}")
-    run_sql(f"""
+    run_sql(
+        f"""
     DO
         $do$
         BEGIN
@@ -41,7 +43,8 @@ def django_db_setup(django_db_blocker, django_db_keepdb=True) -> None:
            END IF;
         END
     $do$;
-    """)
+    """
+    )
 
     with django_db_blocker.unblock():
         call_command("migrate", "--noinput")

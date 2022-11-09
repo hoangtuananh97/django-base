@@ -10,7 +10,6 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from ...tests.utils import flush_post_commit_hooks
 from .utils import assert_no_permission
 
-
 ACCESS_CONTROL_ALLOW_ORIGIN = "Access-Control-Allow-Origin"
 ACCESS_CONTROL_ALLOW_CREDENTIALS = "Access-Control-Allow-Credentials"
 ACCESS_CONTROL_ALLOW_HEADERS = "Access-Control-Allow-Headers"
@@ -19,6 +18,7 @@ ACCESS_CONTROL_ALLOW_METHODS = "Access-Control-Allow-Methods"
 
 class ApiClient(Client):
     """Rest API client."""
+
     simple_token = RefreshToken()
 
     def __init__(self, *args, **kwargs):
@@ -141,4 +141,3 @@ def user_list_not_active(user_list):
 @pytest.fixture(autouse=True)
 def media_storage(settings, tmpdir):
     settings.MEDIA_ROOT = tmpdir.strpath
-

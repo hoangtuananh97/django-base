@@ -1,9 +1,10 @@
 import re
-from typing import List, Pattern, Union
+from re import Pattern
 
 from django.utils.functional import SimpleLazyObject
 
 from config.settings.base import INSTALLED_APPS
+
 from ..settings import *  # noqa
 
 
@@ -15,7 +16,9 @@ def lazy_re_compile(regex, flags=0):
         if isinstance(regex, str):
             return re.compile(regex, flags)
         else:
-            assert not flags, "flags must be empty if regex is passed pre-compiled"
+            assert (
+                not flags
+            ), "flags must be empty if regex is passed pre-compiled"
             return regex
 
     return SimpleLazyObject(_compile)
@@ -44,7 +47,7 @@ AUTH_PASSWORD_VALIDATORS = []
 PASSWORD_HASHERS = ["app.core.tests.dummy_password_hasher.DummyHasher"]
 
 
-PATTERNS_IGNORED_IN_QUERY_CAPTURES: List[Union[Pattern, SimpleLazyObject]] = [
+PATTERNS_IGNORED_IN_QUERY_CAPTURES: list[Pattern | SimpleLazyObject] = [
     lazy_re_compile(r"^SET\s+")
 ]
 
