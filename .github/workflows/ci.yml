@@ -51,9 +51,6 @@ jobs:
       - name: Checkout Code Repository
         uses: actions/checkout@v3
 
-      - name: Install system dependencies
-        run: apt-get install -y libpq-dev
-
       #      - name: Set up Python
       #        uses: actions/setup-python@v3
       #        with:
