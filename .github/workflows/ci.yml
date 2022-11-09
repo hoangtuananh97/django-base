@@ -59,10 +59,10 @@ jobs:
     env:
       # postgres://user:password@host:port/database
       #      DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres"
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: jpox_test_pw
       POSTGRES_ENGINE: django.db.backends.postgresql
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
+      POSTGRES_DB: jpox_test_db
+      POSTGRES_USER: jpox_test_user
       POSTGRES_HOST: localhost
       POSTGRES_PORT: 5432
 
