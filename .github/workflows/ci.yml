@@ -54,7 +54,6 @@ jobs:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
 
-
     env:
       # postgres://user:password@host:port/database
       DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres"
