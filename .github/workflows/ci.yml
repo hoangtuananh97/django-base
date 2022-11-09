@@ -65,6 +65,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install wheel
           pip install -r requirements/local.txt
+          python manage.py migrate --noinput
 
       - name: Test with pytest
         run: pytest
