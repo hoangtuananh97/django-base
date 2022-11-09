@@ -40,8 +40,8 @@ jobs:
           python -m pip install pre-commit==2.20.0
 
       - name: Run Linters and Checks
-          run: |
-            pre-commit run --all
+        run: |
+          pre-commit run --all
 
   # With no caching at all the entire ci process takes 4m 30s to complete!
   pytest:
@@ -53,13 +53,13 @@ jobs:
         image: postgres:14
         ports:
           - 5432:5432
-        env:
-          POSTGRES_PASSWORD: jpox_test_pw
-          POSTGRES_ENGINE: django.db.backends.postgresql
-          POSTGRES_DB: jpox_test_db
-          POSTGRES_USER: jpox_test_user
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
+    #        env:
+    #          POSTGRES_PASSWORD: jpox_test_pw
+    #          POSTGRES_ENGINE: django.db.backends.postgresql
+    #          POSTGRES_DB: jpox_test_db
+    #          POSTGRES_USER: jpox_test_user
+    #          POSTGRES_HOST: localhost
+    #          POSTGRES_PORT: 5432
     env:
       # postgres://user:password@host:port/database
       #      DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres"
@@ -93,4 +93,4 @@ jobs:
           pip install -r requirements/local.txt
 
       - name: Test with pytest
-        run: pytest
+        run: pytest --ds=config.settings.test --reuse-db
