@@ -63,11 +63,6 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install wheel
           pip install -r requirements/local.txt
-          python manage.py migrate --noinput
-
-      - name: Test with pytest
-        run: |
-          pytest --cov --junitxml=junit/test-results.xml
 
       - uses: actions/cache@v3
         with:
@@ -76,14 +71,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pre-commit-
 
+      - name: Run Linters and Checks
+        run: |
+          pre-commit run --all
+        if: ${{ always() }}
+
+      - name: Migrate database
+        run: python manage.py migrate --noinput
+
+      - name: Test with pytest
+        run: |
+          pytest --cov --junitxml=junit/test-results.xml
+
       # Publish coverage and test results
       - uses: actions/upload-artifact@v3
         with:
           name: pytest-results
           path: junit/test-results.xml
-        if: ${{ always() }}
-
-      - name: Run Linters and Checks
-        run: |
-          pre-commit run --all
         if: ${{ always() }}
