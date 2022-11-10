@@ -68,7 +68,9 @@ jobs:
       - name: Test with pytest
         run: |
           coverage run -m pytest && coverage report -m
-          pytest --cov --junitxml=junit/test-results.xml
+          pytest \
+            --cov \
+            --junitxml=junit/test-results.xml
 
       - uses: actions/cache@v3
         with:
