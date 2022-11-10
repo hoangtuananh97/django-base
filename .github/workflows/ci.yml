@@ -62,5 +62,6 @@ jobs:
         run: coverage run -m pytest && coverage report -m
 
       - name: Run Linters and Checks
+        if: (!(github.event.action == 'closed' && github.event.pull_request.merged != true))
         run: |
           pre-commit run --all
