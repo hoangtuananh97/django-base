@@ -67,10 +67,7 @@ jobs:
 
       - name: Test with pytest
         run: |
-          coverage run -m pytest && coverage report -m
-          pytest \
-            --cov \
-            --junitxml=junit/test-results.xml
+          pytest --cov --junitxml=junit/test-results.xml
 
       - uses: actions/cache@v3
         with:
@@ -80,8 +77,6 @@ jobs:
             ${{ runner.os }}-pre-commit-
 
       # Publish coverage and test results
-      - uses: codecov/codecov-action@v2
-
       - uses: actions/upload-artifact@v3
         with:
           name: pytest-results
