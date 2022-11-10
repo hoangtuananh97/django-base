@@ -12,6 +12,9 @@ class UserListSerializer(serializers.ModelSerializer):
 
 class UserCreateSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True, max_length=255)
+    password = serializers.CharField(
+        required=True, max_length=128, write_only=True
+    )
     phone = serializers.CharField(required=True, max_length=15)
     first_name = serializers.CharField(
         required=False, allow_null=True, allow_blank=True, max_length=150
@@ -22,7 +25,15 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["id", "email", "phone", "avatar", "first_name", "last_name"]
+        fields = [
+            "id",
+            "email",
+            "phone",
+            "password",
+            "avatar",
+            "first_name",
+            "last_name",
+        ]
 
     def validate(self, attrs):
         return attrs
