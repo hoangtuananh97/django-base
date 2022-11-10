@@ -8,7 +8,7 @@ env:
 on:
   pull_request:
     branches: ["master", "main", "develop"]
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, closed]
     paths-ignore: ["docs/**"]
 
   push:
@@ -62,6 +62,6 @@ jobs:
         run: coverage run -m pytest && coverage report -m
 
       - name: Run Linters and Checks
-        if: (!(github.event.action == 'closed' && github.event.pull_request.merged != true))
+        if: github.event.action != 'closed' || github.event.pull_request.merged = false
         run: |
           pre-commit run --all
