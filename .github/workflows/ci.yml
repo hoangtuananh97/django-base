@@ -81,7 +81,7 @@ jobs:
 
       - name: Test with pytest
         run: |
-          pytest --cov --junitxml=junit/test-results.xml
+          pytest --cov --cov-fail-under=80 --junitxml=junit/test-results.xml
 
       # Publish coverage and test results
       - uses: actions/upload-artifact@v3
