@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: app_local_postgres
+    volumes:
+      - app_local_postgres_data:/var/lib/postgresql/data:Z
+    env_file:
+      - ./.envs/.local/.postgres
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    restart: always
+    networks:
+      - app_local_web
+
+  django:
+    build:
+      context: .
+      dockerfile: ./docker/local/Dockerfile
+    image: app_local_django
+    container_name: app_local_django
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app:z
+      - static_files:/usr/src/app/staticfiles
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    ports:
+      - "8000:8000"
+    command: /start
+    restart: always
+    networks:
+      - app_local_web
+
+volumes:
+  static_files:
+  app_local_postgres_data:
+    external: true
+
+networks:
+  app_local_web:
+    driver: bridge
