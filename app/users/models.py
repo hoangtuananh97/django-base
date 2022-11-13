@@ -6,6 +6,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+from app.core.models import CoreModel
 from app.core.upload_path import upload_avatar_path
 
 
@@ -37,7 +38,7 @@ class CustomUserManager(UserManager):
         return self._create_user(email, password, **extra_fields)
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin, CoreModel):
     email = models.EmailField(
         verbose_name="email address", max_length=255, unique=True
     )
