@@ -56,9 +56,13 @@ Please note: For Celery's import magic to work, it is important _where_ the cele
 
 ### Remove expired token jwt
     $ python manage.py flushexpiredtokens
-### Run pre-commit before commit (Can setup pre-commit of git)
+### Run pre-commit before commit (Can setup pre-commit of git hook)
     $ pre-commit run --all-files
     $ pre-commit run --files <dir of file>
 ## Deployment
-
+### Run docker 
+#### Create docker volume just once (because docker run on window env)
+    $ docker volume create app_local_postgres_data 
+#### Run docker LOCAL env or DEV env 
+    $ docker-compose -f docker-compose.local.yml up --force-recreate
 The following details how to deploy this application.

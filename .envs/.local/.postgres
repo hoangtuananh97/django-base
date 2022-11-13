@@ -1,0 +1,8 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=jpox_db_1311
+POSTGRES_USER=jpox_user_1311
+POSTGRES_PASSWORD=jpox_pw_1311
+POSTGRES_ENGINE=django.db.backends.postgresql
