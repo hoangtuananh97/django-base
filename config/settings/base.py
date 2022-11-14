@@ -98,6 +98,7 @@ THIRD_PARTY_APPS = [
     "rosetta",
     "django_celery_results",
     "rest_framework_simplejwt.token_blacklist",
+    "django_filters",
 ]
 
 LOCAL_APPS = [
