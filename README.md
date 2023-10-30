@@ -65,4 +65,4 @@ Please note: For Celery's import magic to work, it is important _where_ the cele
     $ docker volume create app_local_postgres_data 
 #### Run docker LOCAL env or DEV env 
     $ docker-compose -f docker-compose.local.yml up --force-recreate
-The following details how to deploy this application.
+The following details how to deploy this application
